@@ -23,11 +23,14 @@ namespace GeniyIdiot
             answers[2] = 25;
             answers[3] = 60;
             answers[4] = 2;
+            
+            
 
             int countRightAnswers = 0;
 
             for (int i = 0; i < 5; i++)
             {
+                Console.WriteLine($"Вопрос №{i + 1}");
                 Console.WriteLine(questions[i]);
 
                 int userAnswer = Convert.ToInt32(Console.ReadLine());
@@ -41,6 +44,34 @@ namespace GeniyIdiot
             }
             
             Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
+
+            string diagnose = "";
+            if (countRightAnswers == 0)
+            {
+                diagnose = "Идиот";
+            }
+            if (countRightAnswers == 1)
+            {
+                diagnose = "Кретин";
+            }
+            if (countRightAnswers == 2)
+            {
+                diagnose = "Дурак";
+            }
+            if (countRightAnswers == 3)
+            {
+                diagnose = "Нормальный";
+            }
+            if (countRightAnswers == 4)
+            {
+                diagnose = "Талант";
+            }
+            if (countRightAnswers == 5)
+            {
+                diagnose = "Гений";
+            }
+            
+            Console.WriteLine("Ваш диагноз: " + diagnose);
         }
     }
 }
