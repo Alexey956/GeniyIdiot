@@ -7,10 +7,10 @@ namespace GeniyIdiot
     {
         static void Main(string[] args)
         {
-            int countQuestions = 5;
+            var countQuestions = 5;
             string[] questions = GetQuestions(countQuestions);
             int[] answers = GetAnswers(countQuestions);
-            int countRightAnswers = 0;
+            var countRightAnswers = 0;
             var randomNumber = GetRandomNumber(0, countQuestions);
             
             for (int i = 0; i < countQuestions; i++)
@@ -19,8 +19,8 @@ namespace GeniyIdiot
                 Console.WriteLine($"Вопрос №{i + 1}");
                 Console.WriteLine(questions[randomQuestionIndex]);
 
-                int userAnswer = Convert.ToInt32(Console.ReadLine());
-                int rightAnswer = answers[randomQuestionIndex];
+                var userAnswer = Convert.ToInt32(Console.ReadLine());
+                var rightAnswer = answers[randomQuestionIndex];
                 
                 if (userAnswer == rightAnswer)
                 {
@@ -69,7 +69,7 @@ namespace GeniyIdiot
         {
             Random random = new Random();
             int[] numbers = Enumerable.Range(minValue, maxValue - minValue).ToArray();
-            //int number = 0;
+            
             for (int i = numbers.Length - 1; i > 0; i--)
             {
                 int j = random.Next(i + 1);
