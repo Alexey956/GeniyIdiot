@@ -7,6 +7,9 @@ namespace GeniyIdiot
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Здравствуйте! Рады видеть вас на прохождении теста Гений и Идиот!");
+            Console.Write("Введите свое имя: ");
+            string userName = Console.ReadLine();
             var countQuestions = 5;
             string[] questions = GetQuestions(countQuestions);
             int[] answers = GetAnswers(countQuestions);
@@ -29,7 +32,7 @@ namespace GeniyIdiot
             }
             Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
             string diagnose = GetDiagnoses(countRightAnswers);
-            Console.WriteLine("Ваш диагноз: " + diagnose);
+            Console.WriteLine($"{userName}, ваш диагноз: {diagnose}");
         }
 
         static string GetDiagnoses(int countRightAnswers)
