@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeniyIdiot
 {
@@ -10,68 +7,76 @@ namespace GeniyIdiot
     {
         static void Main(string[] args)
         {
-            string[] questions = new string[5];
-            questions[0] = "Сколько будет два плюс два умноженное на два?";
-            questions[1] = "Бревно нужно разделить на 10 частей, сколько распилов нужно сделать?";
-            questions[2] = "На двух руках 10 пальцев. Сколько будет пальцев на 5 руках?";
-            questions[3] = "Укол делают каждые полчаса, сколько минут нужно на 3 укола?";
-            questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
-
-            int[] answers = new int[5];
-            answers[0] = 6;
-            answers[1] = 9;
-            answers[2] = 25;
-            answers[3] = 60;
-            answers[4] = 2;
-            
-            
-
+            int countQuestions = 5;
+            string[] questions = GetQuestions(countQuestions);
+            int[] answers = GetAnswers(countQuestions);
             int countRightAnswers = 0;
-
-            for (int i = 0; i < 5; i++)
+            var randomNumber = GetRandomNumber(0, countQuestions);
+            
+            for (int i = 0; i < countQuestions; i++)
             {
+                var randomQuestionIndex = randomNumber[i];
                 Console.WriteLine($"Вопрос №{i + 1}");
-                Console.WriteLine(questions[i]);
+                Console.WriteLine(questions[randomQuestionIndex]);
 
                 int userAnswer = Convert.ToInt32(Console.ReadLine());
-
-                int rightAnswer = answers[i];
-
+                int rightAnswer = answers[randomQuestionIndex];
+                
                 if (userAnswer == rightAnswer)
                 {
                     countRightAnswers++;
                 }
             }
-            
             Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
-
-            string diagnose = "";
-            if (countRightAnswers == 0)
-            {
-                diagnose = "Идиот";
-            }
-            if (countRightAnswers == 1)
-            {
-                diagnose = "Кретин";
-            }
-            if (countRightAnswers == 2)
-            {
-                diagnose = "Дурак";
-            }
-            if (countRightAnswers == 3)
-            {
-                diagnose = "Нормальный";
-            }
-            if (countRightAnswers == 4)
-            {
-                diagnose = "Талант";
-            }
-            if (countRightAnswers == 5)
-            {
-                diagnose = "Гений";
-            }
-            
+            string diagnose = GetDiagnoses(countRightAnswers);
             Console.WriteLine("Ваш диагноз: " + diagnose);
         }
+
+        static string GetDiagnoses(int countRightAnswers)
+        {
+            string[] diagnoses = new string[6];
+            diagnoses[0] = "Идиот";
+            diagnoses[1] = "Кретин";
+            diagnoses[2] = "Дурак";
+            diagnoses[3] = "Нормальный";
+            diagnoses[4] = "Талант";
+            diagnoses[5] = "Гений";
+            return diagnoses[countRightAnswers];
+        }
+        static string[] GetQuestions(int countQuestions)
+        {
+            string[] questions = new string[countQuestions];
+            questions[0] = "Сколько будет два плюс два умноженное на два?";
+            questions[1] = "Бревно нужно разделить на 10 частей, сколько распилов нужно сделать?";
+            questions[2] = "На двух руках 10 пальцев. Сколько будет пальцев на 5 руках?";
+            questions[3] = "Укол делают каждые полчаса, сколько минут нужно на 3 укола?";
+            questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
+            return questions;
+        }
+
+        static int[] GetAnswers(int countQuestions)
+        {
+            int[] answers = new int[countQuestions];
+            answers[0] = 6;
+            answers[1] = 9;
+            answers[2] = 25;
+            answers[3] = 60;
+            answers[4] = 2;
+            return answers;
+        }
+
+        static int[] GetRandomNumber(int minValue, int maxValue)
+        {
+            Random random = new Random();
+            int[] numbers = Enumerable.Range(minValue, maxValue - minValue).ToArray();
+            //int number = 0;
+            for (int i = numbers.Length - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                (numbers[i], numbers[j]) = (numbers[j], numbers[i]);
+            }
+            return numbers;
+        }
+
     }
 }
