@@ -25,12 +25,23 @@ namespace GeniyIdiot
                     Console.WriteLine($"Вопрос №{i + 1}");
                     Console.WriteLine(questions[randomQuestionIndex]);
 
-                    var userAnswer = Convert.ToInt32(Console.ReadLine());
-                    var rightAnswer = answers[randomQuestionIndex];
-                
-                    if (userAnswer == rightAnswer)
+                    while (true)
                     {
-                        countRightAnswers++;
+                        var answer = Console.ReadLine();
+
+                        bool resulAnswer = int.TryParse(answer, out var userAnswers);
+                        if (resulAnswer == true)
+                        {
+                            var rightAnswer = answers[randomQuestionIndex];
+
+                            if (userAnswers == rightAnswer)
+                            {
+                                countRightAnswers++;
+                            }
+                            break;
+                        }
+
+                        Console.WriteLine("Введите числовое значение");
                     }
                 }
                 Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
