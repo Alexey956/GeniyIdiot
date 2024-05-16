@@ -7,32 +7,54 @@ namespace GeniyIdiot
     {
         static void Main()
         {
+            var restartTest = true;
             Console.WriteLine("Здравствуйте! Рады видеть вас на прохождении теста Гений и Идиот!");
             Console.Write("Введите свое имя: ");
             string userName = Console.ReadLine();
-            var countQuestions = 5;
-            string[] questions = GetQuestions(countQuestions);
-            int[] answers = GetAnswers(countQuestions);
-            var countRightAnswers = 0;
-            var randomNumber = GetRandomNumber(0, countQuestions);
-            
-            for (int i = 0; i < countQuestions; i++)
+            while (restartTest)
             {
-                var randomQuestionIndex = randomNumber[i];
-                Console.WriteLine($"Вопрос №{i + 1}");
-                Console.WriteLine(questions[randomQuestionIndex]);
-
-                var userAnswer = Convert.ToInt32(Console.ReadLine());
-                var rightAnswer = answers[randomQuestionIndex];
-                
-                if (userAnswer == rightAnswer)
+                var countQuestions = 5;
+                string[] questions = GetQuestions(countQuestions);
+                int[] answers = GetAnswers(countQuestions);
+                var countRightAnswers = 0;
+                var randomNumber = GetRandomNumber(0, countQuestions);
+            
+                for (int i = 0; i < countQuestions; i++)
                 {
-                    countRightAnswers++;
+                    var randomQuestionIndex = randomNumber[i];
+                    Console.WriteLine($"Вопрос №{i + 1}");
+                    Console.WriteLine(questions[randomQuestionIndex]);
+
+                    var userAnswer = Convert.ToInt32(Console.ReadLine());
+                    var rightAnswer = answers[randomQuestionIndex];
+                
+                    if (userAnswer == rightAnswer)
+                    {
+                        countRightAnswers++;
+                    }
+                }
+                Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
+                string diagnose = GetDiagnoses(countRightAnswers);
+                Console.WriteLine($"{userName}, ваш диагноз: {diagnose}");
+                
+                Console.Write("Хотите пройти тест заново?(1 - да, 0 - нет) ");
+                var answerTest = Console.ReadLine();
+                while (true)
+                {
+                    if (answerTest == "0")
+                    {
+                        restartTest = false;
+                    }
+                    if (answerTest != "0" && answerTest != "1")
+                    {
+                        Console.WriteLine("Введите корректное значение(1 - да, 0 - нет)");
+                        answerTest = Console.ReadLine();
+                    }
+                    else break;
                 }
             }
-            Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
-            string diagnose = GetDiagnoses(countRightAnswers);
-            Console.WriteLine($"{userName}, ваш диагноз: {diagnose}");
+            
+
         }
 
         static string GetDiagnoses(int countRightAnswers)
