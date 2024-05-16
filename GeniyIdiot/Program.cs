@@ -36,27 +36,15 @@ namespace GeniyIdiot
                 Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
                 string diagnose = GetDiagnoses(countRightAnswers);
                 Console.WriteLine($"{userName}, ваш диагноз: {diagnose}");
-                
-                Console.Write("Хотите пройти тест заново?(1 - да, 0 - нет) ");
-                var answerTest = Console.ReadLine();
-                while (true)
+
+                bool userChoice = GetUserChoice("Хотите начать тест сначала?");
+
+                if (userChoice == false)
                 {
-                    if (answerTest == "0")
-                    {
-                        restartTest = false;
-                    }
-                    if (answerTest != "0" && answerTest != "1")
-                    {
-                        Console.WriteLine("Введите корректное значение(1 - да, 0 - нет)");
-                        answerTest = Console.ReadLine();
-                    }
-                    else break;
+                    restartTest = false;
                 }
             }
-            
-
         }
-
         static string GetDiagnoses(int countRightAnswers)
         {
             string[] diagnoses = new string[6];
@@ -94,13 +82,32 @@ namespace GeniyIdiot
         {
             Random random = new Random();
             int[] numbers = Enumerable.Range(minValue, maxValue - minValue).ToArray();
-            
+
             for (int i = numbers.Length - 1; i > 0; i--)
             {
                 int j = random.Next(i + 1);
                 (numbers[i], numbers[j]) = (numbers[j], numbers[i]);
             }
+
             return numbers;
+        }
+
+        static bool GetUserChoice(string message)
+        {
+            while (true)
+            {
+                Console.WriteLine(message + " Введите Да или Нет");
+                var answerTest = Console.ReadLine();
+                if (answerTest.ToLower() == "нет")
+                {
+                    return false;
+                }
+                if (answerTest.ToLower() == "да")
+                {
+                    return true;
+                }
+                Console.WriteLine("Недопустимый ввод. Пожалуйста введите Да или Нет.");
+            }
         }
 
     }
