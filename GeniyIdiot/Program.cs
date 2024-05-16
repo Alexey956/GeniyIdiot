@@ -5,7 +5,7 @@ namespace GeniyIdiot
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Здравствуйте! Рады видеть вас на прохождении теста Гений и Идиот!");
             Console.Write("Введите свое имя: ");
