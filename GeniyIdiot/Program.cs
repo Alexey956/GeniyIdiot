@@ -45,7 +45,7 @@ namespace GeniyIdiot
                     }
                 }
                 Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
-                string diagnose = GetDiagnoses(countRightAnswers);
+                string diagnose = GetDiagnosesResult(countRightAnswers, countQuestions);
                 Console.WriteLine($"{userName}, ваш диагноз: {diagnose}");
 
                 bool userChoice = GetUserChoice("Хотите начать тест сначала?");
@@ -56,8 +56,9 @@ namespace GeniyIdiot
                 }
             }
         }
-        static string GetDiagnoses(int countRightAnswers)
+        static string[] GetDiagnoses()
         {
+            var countDiagnoses = 6;
             string[] diagnoses = new string[6];
             diagnoses[0] = "Идиот";
             diagnoses[1] = "Кретин";
@@ -65,7 +66,7 @@ namespace GeniyIdiot
             diagnoses[3] = "Нормальный";
             diagnoses[4] = "Талант";
             diagnoses[5] = "Гений";
-            return diagnoses[countRightAnswers];
+            return diagnoses;
         }
         static string[] GetQuestions(int countQuestions)
         {
@@ -119,6 +120,39 @@ namespace GeniyIdiot
                 }
                 Console.WriteLine("Недопустимый ввод. Пожалуйста введите Да или Нет.");
             }
+        }
+
+        /// <summary>
+        /// Метод расчета диагноза
+        /// </summary>
+        /// <param name="countResult">Количество правильных ответов</param>
+        /// <param name="countQuestion">Общее количество вопросов в тесте</param>
+        /// <returns></returns>
+        static string GetDiagnosesResult(int countResult, int countQuestion)
+        {
+            double ratioRightAnswer = (double)countResult/countQuestion;
+
+            if (ratioRightAnswer == 0)
+            {
+                return "Идиот";
+            }
+            if (ratioRightAnswer > 0 && ratioRightAnswer < 0.25)
+            {
+                return "Кретин";
+            }
+            if (ratioRightAnswer >= 0.25 && ratioRightAnswer < 0.45)
+            {
+                return "Дурак";
+            }
+            if (ratioRightAnswer >= 0.45 && ratioRightAnswer < 0.65)
+            {
+                return "Нормальный";
+            }
+            if (ratioRightAnswer >= 0.65 && ratioRightAnswer < 0.85)
+            {
+                return "Талант";
+            }
+            return "Гений";
         }
 
     }
