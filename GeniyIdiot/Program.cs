@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace GeniyIdiot
 {
@@ -11,6 +13,7 @@ namespace GeniyIdiot
             Console.WriteLine("Здравствуйте! Рады видеть вас на прохождении теста Гений и Идиот!");
             Console.Write("Введите свое имя: ");
             string userName = Console.ReadLine();
+            
             while (restartTest)
             {
                 var countQuestions = 5;
@@ -24,31 +27,28 @@ namespace GeniyIdiot
                     var randomQuestionIndex = randomNumber[i];
                     Console.WriteLine($"Вопрос №{i + 1}");
                     Console.WriteLine(questions[randomQuestionIndex]);
+                    int userAnswer = GetUserAnswer();
 
-                    while (true)
+                    int rightAnswer = answers[randomQuestionIndex];
+
+                    if (userAnswer == rightAnswer)
                     {
-                        var answer = Console.ReadLine();
-
-                        bool resulAnswer = int.TryParse(answer, out var userAnswers);
-                        if (resulAnswer == true)
-                        {
-                            var rightAnswer = answers[randomQuestionIndex];
-
-                            if (userAnswers == rightAnswer)
-                            {
-                                countRightAnswers++;
-                            }
-                            break;
-                        }
-
-                        Console.WriteLine("Введите числовое значение");
+                        countRightAnswers++;
                     }
                 }
                 Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
                 string diagnose = GetDiagnosesResult(countRightAnswers, countQuestions);
                 Console.WriteLine($"{userName}, ваш диагноз: {diagnose}");
 
-                bool userChoice = GetUserChoice("Хотите начать тест сначала?");
+                SaveUserResult(userName, countRightAnswers, diagnose);
+                
+                bool userChoice = GetUserChoice("Хотите посмотреть предыдущие результаты игры?");
+                if (userChoice)
+                {
+                    ShowUserResults();
+                }
+                
+                userChoice = GetUserChoice("Хотите начать тест сначала?");
 
                 if (userChoice == false)
                 {
@@ -56,18 +56,56 @@ namespace GeniyIdiot
                 }
             }
         }
-        static string[] GetDiagnoses()
+
+        static void ShowUserResults()
         {
-            var countDiagnoses = 6;
-            string[] diagnoses = new string[6];
-            diagnoses[0] = "Идиот";
-            diagnoses[1] = "Кретин";
-            diagnoses[2] = "Дурак";
-            diagnoses[3] = "Нормальный";
-            diagnoses[4] = "Талант";
-            diagnoses[5] = "Гений";
-            return diagnoses;
+            StreamReader reader = new StreamReader("userResults.txt", Encoding.UTF8);
+            
+            Console.WriteLine("{0:20}, {1:20}, {2:10}", "Имя","Кол- правильных ответов", "Диагноз");
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                string[] values = line.Split('#');
+                string name = values[0];
+                int countRightAnswers = Convert.ToInt32(values[1]);
+                string diagnose = values[2];
+
+                Console.WriteLine("{0:20}, {1:20}, {2:10}", name, countRightAnswers, diagnose); 
+            }
+            reader.Close();
         }
+
+        static void SaveUserResult(string userName, int countRightAnswers, string diagnose)
+        {
+            string value = $"{userName}#{countRightAnswers}#{diagnose}";
+            AppendToFile("userResults.txt", value);
+        }
+
+        static void AppendToFile(string fileName, string value)
+        {
+            StreamWriter writer = new StreamWriter(fileName, true, Encoding.UTF8);
+            writer.WriteLine(value);
+            writer.Close();
+        }
+        private static int GetUserAnswer()
+        {
+            while (true)
+            {
+                try
+                {
+                    return Convert.ToInt32(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Введите число");
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("Введите число от -2*10^9 до 2*10^9!");
+                }
+            }
+        }
+       
         static string[] GetQuestions(int countQuestions)
         {
             string[] questions = new string[countQuestions];
