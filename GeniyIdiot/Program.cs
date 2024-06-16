@@ -1,33 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GeniyIdiot
 {
     internal class Program
     {
+        
         static void Main()
         {
             var restartTest = true;
             Console.WriteLine("Здравствуйте! Рады видеть вас на прохождении теста Гений и Идиот!");
             Console.Write("Введите свое имя: ");
-            string userName = Console.ReadLine();
             
+            var userName = Validation();
+
             while (restartTest)
             {
-                var countQuestions = 5;
-                string[] questions = GetQuestions(countQuestions);
-                int[] answers = GetAnswers(countQuestions);
+                
+                var questions = GetQuestions();
+                var answers = GetAnswers();
+                var countQuestions = questions.Count;
                 var countRightAnswers = 0;
                 var randomNumber = GetRandomNumber(0, countQuestions);
-            
+
                 for (int i = 0; i < countQuestions; i++)
                 {
                     var randomQuestionIndex = randomNumber[i];
                     Console.WriteLine($"Вопрос №{i + 1}");
                     Console.WriteLine(questions[randomQuestionIndex]);
-                    int userAnswer = GetUserAnswer();
+                    var userAnswer = GetUserAnswer();
 
                     int rightAnswer = answers[randomQuestionIndex];
 
@@ -37,17 +42,17 @@ namespace GeniyIdiot
                     }
                 }
                 Console.WriteLine("Количество правильных ответов: " + countRightAnswers);
-                string diagnose = GetDiagnosesResult(countRightAnswers, countQuestions);
+                var diagnose = GetDiagnosesResult(countRightAnswers, countQuestions);
                 Console.WriteLine($"{userName}, ваш диагноз: {diagnose}");
 
                 SaveUserResult(userName, countRightAnswers, diagnose);
-                
+
                 bool userChoice = GetUserChoice("Хотите посмотреть предыдущие результаты игры?");
                 if (userChoice)
                 {
                     ShowUserResults();
                 }
-                
+
                 userChoice = GetUserChoice("Хотите начать тест сначала?");
 
                 if (userChoice == false)
@@ -55,6 +60,25 @@ namespace GeniyIdiot
                     restartTest = false;
                 }
             }
+        }
+
+        private static string Validation()
+        {
+            var userName = Console.ReadLine();
+            var validation = '#';
+            var valid = Contains(userName, validation);
+
+            while(true)
+            {
+                if (valid)
+                {
+                    Console.WriteLine("Введите имя без символа #!");
+                    userName = Console.ReadLine();
+                    valid = Contains(userName, validation);
+                }
+                else break;
+            }
+            return userName;
         }
 
         static void ShowUserResults()
@@ -65,10 +89,10 @@ namespace GeniyIdiot
             Console.WriteLine("-----------------------------------------------------------------");
             while (!reader.EndOfStream)
             {
-                string line = reader.ReadLine();
+                var line = reader.ReadLine();
                 string[] values = line.Split('#');
                 string name = values[0];
-                int countRightAnswers = Convert.ToInt32(values[1]);
+                var countRightAnswers = Convert.ToInt32(values[1]);
                 string diagnose = values[2];
 
                 Console.WriteLine("{0,-20}{1,15}{2,27}", name, countRightAnswers, diagnose);
@@ -107,25 +131,29 @@ namespace GeniyIdiot
             }
         }
        
-        static string[] GetQuestions(int countQuestions)
+        static List<string> GetQuestions()
         {
-            string[] questions = new string[countQuestions];
-            questions[0] = "Сколько будет два плюс два умноженное на два?";
-            questions[1] = "Бревно нужно разделить на 10 частей, сколько распилов нужно сделать?";
-            questions[2] = "На двух руках 10 пальцев. Сколько будет пальцев на 5 руках?";
-            questions[3] = "Укол делают каждые полчаса, сколько минут нужно на 3 укола?";
-            questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
+            var questions = new List<string>
+            {
+                "Сколько будет два плюс два умноженное на два?",
+                "Бревно нужно разделить на 10 частей, сколько распилов нужно сделать?",
+                "На двух руках 10 пальцев. Сколько будет пальцев на 5 руках?",
+                "Укол делают каждые полчаса, сколько минут нужно на 3 укола?",
+                "Пять свечей горело, две потухли. Сколько свечей осталось?"
+            };
             return questions;
         }
 
-        static int[] GetAnswers(int countQuestions)
+        static List<int> GetAnswers()
         {
-            int[] answers = new int[countQuestions];
-            answers[0] = 6;
-            answers[1] = 9;
-            answers[2] = 25;
-            answers[3] = 60;
-            answers[4] = 2;
+            List<int> answers = new List<int>
+            {
+                6,
+                9,
+                25,
+                60,
+                2
+            };
             return answers;
         }
 
@@ -192,6 +220,10 @@ namespace GeniyIdiot
                 return "Талант";
             }
             return "Гений";
+        }
+        public static bool Contains(string input, char c)
+        {
+            return input.Contains(c);
         }
 
     }
