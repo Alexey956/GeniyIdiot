@@ -61,7 +61,8 @@ namespace GeniyIdiot
         {
             StreamReader reader = new StreamReader("userResults.txt", Encoding.UTF8);
             
-            Console.WriteLine("{0:20}, {1:20}, {2:10}", "Имя","Кол- правильных ответов", "Диагноз");
+            Console.WriteLine("{0,-20}{1,20}{2,20}", "Имя","Кол- правильных ответов", "Диагноз");
+            Console.WriteLine("-----------------------------------------------------------------");
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
@@ -70,7 +71,7 @@ namespace GeniyIdiot
                 int countRightAnswers = Convert.ToInt32(values[1]);
                 string diagnose = values[2];
 
-                Console.WriteLine("{0:20}, {1:20}, {2:10}", name, countRightAnswers, diagnose); 
+                Console.WriteLine("{0,-20}{1,15}{2,27}", name, countRightAnswers, diagnose);
             }
             reader.Close();
         }
