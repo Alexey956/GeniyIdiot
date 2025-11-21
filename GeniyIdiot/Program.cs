@@ -10,8 +10,8 @@ namespace GeniyIdiot
         static void Main()
         {
             var restartTest = true;
-            Console.WriteLine("Здравствуйте! Рады видеть вас на прохождении теста Гений и Идиот!");
-            Console.Write("Введите свое имя: ");
+            Console.WriteLine("День Добрый! Вы попали на страницу проверки вашего IQ.Шучу, это тест Гений и Идиот");
+            Console.Write("Введите свое имя и фамилию: ");
             string userName = Console.ReadLine();
             
             while (restartTest)
